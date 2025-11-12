@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Order",
+  "type": "object",
+  "properties": {
+    "OrderID": {
+      "type": "integer"
+    },
+    "Customer": {
+      "type": "string"
+    },
+    "Product": {
+      "type": "string"
+    },
+    "Quantity": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "Deadline": {
+      "type": "string",
+      "format": "date"
+    },
+    "Location": {
+      "type": "string"
+    },
+    "Scheduled": {
+      "type": "boolean",
+      "description": "Indicates whether the order is scheduled for processing"
+    },
+    "Fulfillment_Method": {
+      "type": "string",
+      "enum": ["Sea Freight", "Air Freight", "Land Freight"],
+      "description": "Mode of transportation for fulfilling the order"
+    },
+    "Recommended_Plant": {
+      "type": "string",
+      "description": "Plant recommended for production"
+    },
+    "Recommended_Plant_Rationale": {
+      "type": "string",
+      "description": "Reason for recommending the plant"
+    },
+    "Production_Cost": {
+      "type": "number",
+      "description": "Estimated production cost",
+      "minimum": 0
+    },
+    "Shipping_Cost": {
+      "type": "number",
+      "description": "Estimated shipping cost",
+      "minimum": 0
+    },
+    "Risk_Assessment": {
+      "type": "string",
+      "description": "Summary of risk assessment for the order"
+    }
+  },
+  "required": [
+    "OrderID",
+    "Customer",
+    "Product",
+    "Quantity",
+    "Deadline",
+    "Location",
+    "Scheduled",
+    "Fulfillment_Method",
+    "Recommended_Plant",
+    "Recommended_Plant_Rationale",
+    "Production_Cost",
+    "Shipping_Cost",
+    "Risk_Assessment"
+  ],
+  "additionalProperties": false
+}
