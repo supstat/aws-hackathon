@@ -43,7 +43,7 @@ class JSONDataLoader:
     
     def get_factory_model(self) -> Dict[str, Any]:
         """Get shared factory model data."""
-        return self._load_json_file("shared/factory_model.json")
+        return self._load_json_file("erp/business_data.json")
     
     def get_cmms_data(self) -> Dict[str, Any]:
         """Get CMMS maintenance data."""
