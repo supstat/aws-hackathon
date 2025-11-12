@@ -1,10 +1,34 @@
 # mcp_server_shipping.py
 from mcp.server.fastmcp import FastMCP
+import datetime
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from functools import lru_cache
+import logging
 
-mcp = FastMCP(host="0.0.0.0", stateless_http=True)
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger('Logistic-Server')
+
+# Initialize FastMCP
+mcp = FastMCP("Logistic Server 🏭")
+
+# Server metadata
+SERVER_INFO = {
+    "name": "Logistic Server",
+    "version": "2.0.0",
+    "description": "Logistic Server - GlobalApparel",
+    "port": 8004,
+    "status": "running",
+    "started_at": datetime.datetime.now().isoformat(),
+    "data_source": "local_json_files"
+}
+
+@mcp.custom_route("/info", methods=["GET"])
+async def server_info(request):
+    """Server information endpoint."""
+    from starlette.responses import JSONResponse
+    return JSONResponse(content=SERVER_INFO)
 
 # Geocoder (set a distinct user_agent per Nominatim policy)
 _geolocator = Nominatim(user_agent="logistic_mcp_server", timeout=10)
@@ -59,4 +83,4 @@ def calculate_shipping_metrics(
     }
 
 if __name__ == "__main__":
-    mcp.run(transport="streamable-http")
+    mcp.run(transport="stdio")

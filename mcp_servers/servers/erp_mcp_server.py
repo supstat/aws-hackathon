@@ -7,7 +7,7 @@ import datetime
 import uuid
 import logging
 from typing import List, Dict, Any, Optional
-from mcp_servers.json_data_loader import data_loader
+from json_data_loader import data_loader
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
