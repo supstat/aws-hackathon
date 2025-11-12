@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Order",
+  "type": "object",
+  "properties": {
+    "OrderID": {
+      "type": "integer"
+    },
+    "Customer": {
+      "type": "string"
+    },
+    "Product": {
+      "type": "string"
+    },
+    "Quantity": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "Deadline": {
+      "type": "string",
+      "format": "date"
+    },
+    "Location": {
+      "type": "string"
+    },
+    "Scheduled": {
+      "type": "boolean",
+      "description": "Indicates whether the order is scheduled for processing"
+    }
+  },
+  "required": [
+    "OrderID",
+    "Customer",
+    "Product",
+    "Quantity",
+    "Deadline",
+    "Location",
+    "Scheduled"
+  ],
+  "additionalProperties": false
+}
