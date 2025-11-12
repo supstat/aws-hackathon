@@ -7,7 +7,7 @@ import datetime
 import uuid
 import logging
 from typing import List, Dict, Any, Optional
-from json_data_loader import data_loader
+from mcp_servers.json_data_loader import data_loader
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -20,7 +20,7 @@ mcp = FastMCP("ERP Server 💼")
 SERVER_INFO = {
     "name": "ERP Server",
     "version": "2.0.0",
-    "description": "Enterprise Resource Planning - Wind Turbine Assembly Plant",
+    "description": "PN2 - ERP Cloth Production Facilites Business Data",
     "port": 8002,
     "status": "running",
     "started_at": datetime.datetime.now().isoformat(),
@@ -133,184 +133,7 @@ def get_sales_orders(customer_id: Optional[str] = None, status: Optional[str] = 
 
 @handle_errors
 @mcp.tool
-def get_production_orders(status: Optional[str] = None) -> Dict[str, Any]:
-    """
-    Get production orders, optionally filtered by status.
-    
-    Args:
-        status: Optional status to filter by (scheduled, in_progress, completed)
-        
-    Returns:
-        List of production orders matching the criteria
-    """
-    logger.info(f"Getting production orders - status: {status}")
-    
-    erp_data = data_loader.get_erp_data()
-    production_orders = erp_data.get("data", {}).get("production_orders", [])
-    
-    if status:
-        production_orders = [po for po in production_orders if po.get("status") == status.lower()]
-    
-    return {
-        "success": True,
-        "production_orders": production_orders,
-        "total_orders": len(production_orders)
-    }
-
-@handle_errors
-@mcp.tool
-def get_inventory(product_id: Optional[str] = None, item_type: Optional[str] = None) -> Dict[str, Any]:
-    """
-    Get inventory information, optionally filtered by product ID and/or item type.
-    
-    Args:
-        product_id: Optional product ID to filter by
-        item_type: Optional item type to filter by (finished_goods, spare_parts)
-        
-    Returns:
-        List of inventory items matching the criteria
-    """
-    logger.info(f"Getting inventory - product_id: {product_id}, item_type: {item_type}")
-    
-    erp_data = data_loader.get_erp_data()
-    inventory = erp_data.get("data", {}).get("inventory", [])
-    
-    # Apply filters
-    filtered_inventory = inventory
-    if product_id:
-        filtered_inventory = [i for i in filtered_inventory if i.get("product_id") == product_id]
-    if item_type:
-        filtered_inventory = [i for i in filtered_inventory if i.get("item_type") == item_type]
-    
-    return {
-        "success": True,
-        "inventory": filtered_inventory,
-        "total_items": len(filtered_inventory)
-    }
-
-@handle_errors
-@mcp.tool
-def get_spare_parts_inventory() -> Dict[str, Any]:
-    """
-    Get spare parts inventory with detailed information.
-    
-    Returns:
-        List of spare parts with availability and specifications
-    """
-    logger.info("Getting spare parts inventory")
-    
-    erp_data = data_loader.get_erp_data()
-    inventory = erp_data.get("data", {}).get("inventory", [])
-    
-    # Filter for spare parts only
-    spare_parts = [i for i in inventory if i.get("item_type") == "spare_parts"]
-    
-    return {
-        "success": True,
-        "spare_parts": spare_parts,
-        "total_spare_parts": len(spare_parts)
-    }
-
-@handle_errors
-@mcp.tool
-def get_suppliers(supplier_type: Optional[str] = None) -> Dict[str, Any]:
-    """
-    Get supplier information, optionally filtered by supplier type.
-    
-    Args:
-        supplier_type: Optional supplier type filter (standard, premium, strategic)
-        
-    Returns:
-        List of suppliers matching the criteria
-    """
-    logger.info(f"Getting suppliers - type: {supplier_type}")
-    
-    erp_data = data_loader.get_erp_data()
-    suppliers = erp_data.get("data", {}).get("suppliers", [])
-    
-    if supplier_type:
-        suppliers = [s for s in suppliers if s.get("supplier_type") == supplier_type.lower()]
-    
-    return {
-        "success": True,
-        "suppliers": suppliers,
-        "total_suppliers": len(suppliers)
-    }
-
-@handle_errors
-@mcp.tool
-def get_purchase_orders(supplier_id: Optional[str] = None, status: Optional[str] = None) -> Dict[str, Any]:
-    """
-    Get purchase orders, optionally filtered by supplier ID and/or status.
-    
-    Args:
-        supplier_id: Optional supplier ID to filter by
-        status: Optional status to filter by (pending, confirmed, delivered)
-        
-    Returns:
-        List of purchase orders matching the criteria
-    """
-    logger.info(f"Getting purchase orders - supplier_id: {supplier_id}, status: {status}")
-    
-    erp_data = data_loader.get_erp_data()
-    purchase_orders = erp_data.get("data", {}).get("purchase_orders", [])
-    
-    # Apply filters
-    filtered_orders = purchase_orders
-    if supplier_id:
-        filtered_orders = [po for po in filtered_orders if po.get("supplier_id") == supplier_id]
-    if status:
-        filtered_orders = [po for po in filtered_orders if po.get("status") == status.lower()]
-    
-    return {
-        "success": True,
-        "purchase_orders": filtered_orders,
-        "total_orders": len(filtered_orders)
-    }
-
-@handle_errors
-@mcp.tool
-def get_financial_metrics() -> Dict[str, Any]:
-    """
-    Get financial metrics and KPIs.
-    
-    Returns:
-        Dictionary containing financial metrics
-    """
-    logger.info("Getting financial metrics")
-    
-    erp_data = data_loader.get_erp_data()
-    financial_metrics = erp_data.get("data", {}).get("financial_metrics", {})
-    
-    return {
-        "success": True,
-        "financial_metrics": financial_metrics,
-        "timestamp": datetime.datetime.now().isoformat()
-    }
-
-@handle_errors
-@mcp.tool
-def get_business_metrics() -> Dict[str, Any]:
-    """
-    Get business metrics and operational KPIs.
-    
-    Returns:
-        Dictionary containing business metrics
-    """
-    logger.info("Getting business metrics")
-    
-    erp_data = data_loader.get_erp_data()
-    business_metrics = erp_data.get("data", {}).get("business_metrics", {})
-    
-    return {
-        "success": True,
-        "business_metrics": business_metrics,
-        "timestamp": datetime.datetime.now().isoformat()
-    }
-
-@handle_errors
-@mcp.tool
-def create_sales_order(customer_id: str, product_id: str, quantity: int, unit_price: float) -> Dict[str, Any]:
+def create_sales_order(customer_id: str, product_id: str, quantity: int) -> Dict[str, Any]:
     """
     Create a new sales order.
     
@@ -350,17 +173,8 @@ def create_sales_order(customer_id: str, product_id: str, quantity: int, unit_pr
     sales_order = {
         "order_id": order_id,
         "customer_id": customer_id,
-        "customer_name": customer.get("name"),
         "product_id": product_id,
-        "product_name": product.get("name"),
-        "quantity": quantity,
-        "unit_price": unit_price,
-        "total_value": quantity * unit_price,
-        "order_date": datetime.datetime.now().isoformat(),
-        "required_date": (datetime.datetime.now() + datetime.timedelta(days=90)).isoformat(),
-        "promised_date": (datetime.datetime.now() + datetime.timedelta(days=95)).isoformat(),
-        "status": "pending",
-        "priority": "medium"
+        "quantity": quantity
     }
     
     return {
