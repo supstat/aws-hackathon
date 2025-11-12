@@ -9,7 +9,6 @@
   },
   "data": {
     "customers": [
-      // --- 30 Lower Risk Countries (mostly G7, EU, AUS/NZ, Stable Asia) ---
       {
         "customer_id": "C-0001",
         "name": "Adidas AG",
@@ -160,8 +159,6 @@
         "name": "Converse (Nike subsidiary)",
         "address": "1 Lovejoy Wharf, Boston, MA 02114, USA"
       },
-      
-      // --- 20 Higher Risk Countries (Geopolitical, Economic Instability, or Complex Regulatory) ---
       {
         "customer_id": "C-0031",
         "name": "Forever 21 (Mexico Division)",
