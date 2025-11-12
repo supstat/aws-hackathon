@@ -7,7 +7,7 @@ from functools import lru_cache
 mcp = FastMCP(host="0.0.0.0", stateless_http=True)
 
 # Geocoder (set a distinct user_agent per Nominatim policy)
-_geolocator = Nominatim(user_agent="mcp-shipping-distance", timeout=10)
+_geolocator = Nominatim(user_agent="logistic_mcp_server", timeout=10)
 
 @lru_cache(maxsize=512)
 def _geocode(city: str, country: str):
